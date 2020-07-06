@@ -1,0 +1,22 @@
+ion-col.md.hydrated {
+    padding: 1px;
+    margin: 1px;
+    min-height: 50px;
+    border: 1px solid;
+    text-align: center;
+}
+ion-grid {
+    transform: rotateX(150deg);
+}
+.north{
+    transform: rotate(180deg);
+}
+.south{
+    transform: rotate(0deg);
+}
+.west{
+    transform: rotate(270deg);
+}
+.east{
+    transform: rotate(90deg);
+}
