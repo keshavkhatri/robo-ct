@@ -1,5 +1,7 @@
 {
   "name": "robo-ct",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

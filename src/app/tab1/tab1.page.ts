@@ -21,7 +21,7 @@ export class Tab1Page {
     xCurrent: number = 0;
     yCurrent: number = 0;
     direction: string;
-    messages:object = MESSAGES;
+    messages:any = MESSAGES;
 
     constructor(
         private alert: AlertController,
