@@ -1,159 +1,158 @@
+// Core component
 import { Component } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
+
+// Static values
+import { DIRECTIONS, MESSAGES, LENGTH, SIDES } from '../shared/systemConstants';
 
 @Component({
     selector: 'app-tab1',
     templateUrl: 'tab1.page.html',
     styleUrls: ['tab1.page.scss']
 })
+
+/*
+    Class for our main tab page.
+*/
 export class Tab1Page {
 
-    length: number = 5;
     xArr: Array<any> = [];
     yArr: Array<any> = [];
     xCurrent: number = 0;
     yCurrent: number = 0;
-    direction: string = 'north';
-    dirArr: Array<any> = [
-        'north',
-        'south',
-        'east',
-        'west',
-    ];
+    direction: string;
+    messages:object = MESSAGES;
 
     constructor(
-        private alertController: AlertController,
-        public toastController: ToastController
+        private alert: AlertController,
+        private toastController: ToastController
     ) { }
 
     ngOnInit() {
-        for (let i = 0; i < this.length; i++) {
+        for (let i = 0; i < LENGTH; i++) {
             this.xArr.push({});
             this.yArr.push({});
         }
+        this.direction = DIRECTIONS.NORTH;
     }
 
+    /*
+        Function move
+        Used to move the robo forward
+        @param: void 
+    */
     move() {
+        // Making coordinate changes according to current direction
+        // Showing error in case of robo falling out of bounds
         switch (this.direction) {
-            case 'east':
-                if (this.xCurrent < this.length - 1) {
-                    this.xCurrent++;
-                    break;
-                } else {
-                    this.dontKill()
-                }
+            case DIRECTIONS.EAST:
+                this.xCurrent < LENGTH - 1 ? this.xCurrent++ : this.dontKill();
                 break;
-            case 'west':
-                if (this.xCurrent > 0) {
-                    this.xCurrent--;
-                    break;
-                } else {
-                    this.dontKill()
-                }
+            case DIRECTIONS.WEST:
+                this.xCurrent > 0 ? this.xCurrent-- : this.dontKill();
                 break;
-            case 'north':
-                if (this.yCurrent < this.length - 1) {
-                    this.yCurrent++;
-                    break;
-                } else {
-                    this.dontKill()
-                }
+            case DIRECTIONS.NORTH:
+                this.yCurrent < LENGTH - 1 ? this.yCurrent++ : this.dontKill();
                 break;
-            case 'south':
-                if (this.yCurrent > 0) {
-                    this.yCurrent--;
-                    break;
-                } else {
-                    this.dontKill()
-                }
+            case DIRECTIONS.SOUTH:
+                this.yCurrent > 0 ? this.yCurrent-- : this.dontKill();
                 break;
             default:
                 break;
         }
     }
 
+    /*
+        Function changeDirection
+        Used to change direction of the robo
+        @param {side} either left or right.
+    */
     changeDirection(side) {
+        // Changing current direction according to input given 
         switch (this.direction) {
-            case 'east':
-                if (side == 'left') {
-                    this.direction = 'north';
-                } else {
-                    this.direction = 'south';
-                }
+            case DIRECTIONS.EAST:
+                this.direction = side == SIDES.LEFT ? DIRECTIONS.NORTH : DIRECTIONS.SOUTH;
                 break;
-            case 'west':
-                if (side == 'left') {
-                    this.direction = 'south';
-                } else {
-                    this.direction = 'north';
-                }
+            case DIRECTIONS.WEST:
+                this.direction = side == SIDES.LEFT ? DIRECTIONS.SOUTH : DIRECTIONS.NORTH;
                 break;
-            case 'north':
-                if (side == 'left') {
-                    this.direction = 'west';
-                } else {
-                    this.direction = 'east';
-                }
+            case DIRECTIONS.NORTH:
+                this.direction = side == SIDES.LEFT ? DIRECTIONS.WEST : DIRECTIONS.EAST;
                 break;
-            case 'south':
-                if (side == 'left') {
-                    this.direction = 'east';
-                } else {
-                    this.direction = 'west';
-                }
+            case DIRECTIONS.SOUTH:
+                this.direction = side == SIDES.LEFT ? DIRECTIONS.EAST : DIRECTIONS.WEST;
                 break;
             default:
                 break;
         }
     }
 
-    async dontKill() {
-        const alert = await this.alertController.create({
-            header: 'Save me!',
-            message: 'Dont try to kill me mate.',
-            buttons: ['OK']
-        });
-
-        await alert.present();
+    /*
+        Function dontKill
+        Used to show an alert in case of 
+        robo falling out of bounds
+        @param void
+    */
+    dontKill() {
+        this.infoAlert(MESSAGES.TEXT_SAVE,MESSAGES.TEXT_DONT);
     }
 
-    async report() {
-        const alert = await this.alertController.create({
-            header: 'Where i am?',
-            message: 'Here is my location X: ' + this.xCurrent + ', Y: ' + this.yCurrent + ' and facing ' + this.direction,
-            buttons: ['OK']
-        });
-
-        await alert.present();
+    /*
+        Function report
+        Used to show an alert with
+        current coordinates and direction of the robo
+        @param void
+    */
+    report() {
+        let msg = 'Here is my location X: ' + this.xCurrent + ', Y: ' + this.yCurrent + ' and facing ' + this.direction;
+        this.infoAlert(MESSAGES.TEXT_WHERE,msg);
     }
 
+    /*
+        Function infoAlert
+        To create an instance of alert commonly used
+        @param {header} header text of alert
+        @param {message} message text of alert
+    */
+    infoAlert(header, message){
+        this.alert.create({
+            header: header,
+            message: message,
+            buttons: [MESSAGES.TEXT_OK]
+        }).then(alert => alert.present());
+    }
+
+    /*
+        Function place
+        To get new coordinates of robo from user
+        @param void
+    */
     async place() {
-        const alert = await this.alertController.create({
-            cssClass: 'my-custom-class',
-            header: 'Place me anywhere',
+        const alert = await this.alert.create({
+            header: MESSAGES.HEADER_PLACE,
             inputs: [
                 {
                     name: 'xaxis',
                     type: 'tel',
-                    placeholder: 'x axis between 0 to 4'
+                    placeholder: MESSAGES.LABEL_X+(LENGTH-1)
                 },
                 {
                     name: 'yaxis',
                     type: 'tel',
-                    placeholder: 'y axis between 0 to 4'
+                    placeholder: MESSAGES.LABEL_Y+(LENGTH-1)
                 },
                 {
                     name: 'direction',
                     type: 'text',
-                    placeholder: 'one of north, south, east, west',
+                    placeholder: MESSAGES.LABEL_DIRECTION,
                 }
             ],
             buttons: [
                 {
-                    text: 'Cancel',
+                    text: MESSAGES.TEXT_CANCEL,
                     role: 'cancel',
                 }, {
-                    text: 'Ok',
+                    text: MESSAGES.TEXT_OK,
                     handler: (data) => {
                         if (this.validate(data)) {
                             this.setPlace(data);
@@ -168,27 +167,50 @@ export class Tab1Page {
         await alert.present();
     }
 
+    /*
+        Function setPlace
+        To get values from user and place robo according to given values
+        @param {data} object containing xaxis, yaxis and direction
+    */
     setPlace(data) {
         this.xCurrent = data.xaxis;
         this.yCurrent = data.yaxis;
-        this.direction = data.direction;
+        this.direction = data.direction.toLowerCase();
     }
 
+    /*
+        Function validate
+        To validate user data
+        @param {data} object containing xaxis, yaxis and direction
+    */
     validate(data) {
-        console.log(data.xaxis);
-        if (data.xaxis > 4 || data.xaxis < 0) {
-            this.toastError('x axis value is not correct');
+        if (data.xaxis > LENGTH-1 || data.xaxis < 0) {
+            this.toastError(MESSAGES.ERROR_X);
             return false;
-        }else if (data.yaxis > 4 || data.yaxis < 0) {
-            this.toastError('y axis value is not correct');
+        } else if (data.yaxis > LENGTH-1 || data.yaxis < 0) {
+            this.toastError(MESSAGES.ERROR_Y);
             return false;
-        }else if (!this.dirArr.includes(data.direction)) {
-            this.toastError('direction is not correct');
+        } else if (!this.checkDirection(data.direction.toLowerCase())) {
+            this.toastError(MESSAGES.ERROR_DIRECTION);
             return false;
         }
         return true;
     }
 
+    /*
+        Function checkDirection
+        Helper function to check if given direction is correct
+        @param {input} text to check
+    */
+    checkDirection(input){
+        return Object.keys(DIRECTIONS).find(key => DIRECTIONS[key] === input);
+    }
+
+    /*
+        Function toastError
+        Used to show toast error in case of wrong input
+        @param {msg} text to show
+    */
     async toastError(msg) {
         const toast = await this.toastController.create({
             message: msg,
@@ -196,5 +218,14 @@ export class Tab1Page {
             duration: 3000
         });
         toast.present();
+    }
+
+    /*
+        Function info
+        Used to show info about the app
+        @param void
+    */
+    info() {
+        this.infoAlert(MESSAGES.INFO_HEADER,MESSAGES.INFO_DESC);
     }
 }

@@ -1,34 +1,57 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
         <ion-title>
-            Robo CT
+            {{messages.TITLE}}
         </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="info()">
+                <ion-icon name="help-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <ion-grid>
+    <ion-grid class="game">
         <ion-row *ngFor="let xobj of yArr; let i = index">
-            <ion-col *ngFor="let jobj of xArr; let j = index">
+            <ion-col class="gameBox" *ngFor="let jobj of xArr; let j = index">
                 <div class="{{direction}}" *ngIf="xCurrent == j && yCurrent == i">
                     <img src="assets/icon/robot.png">
                 </div>
             </ion-col>
         </ion-row>
     </ion-grid>
-    <ion-button (click)="place()">
-        Place
-    </ion-button>
-    <ion-button (click)="move()">
-        Move
-    </ion-button>
-    <ion-button (click)="changeDirection('left')">
-        Left
-    </ion-button>
-    <ion-button (click)="changeDirection('right')">
-        Right
-    </ion-button>
-    <ion-button (click)="report()">
-        Report
-    </ion-button>
+    <ion-grid>
+        <ion-row>
+            <ion-col class="center">
+                <ion-button (click)="place()">
+                    {{messages.PLACE}}
+                </ion-button>
+            </ion-col>
+            <ion-col class="center">
+                <ion-button (click)="report()">
+                    {{messages.REPORT}}
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="center">
+                <ion-button (click)="move()">
+                    {{messages.MOVE}}
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="center">
+                <ion-button (click)="changeDirection('left')">
+                    {{messages.LEFT}}
+                </ion-button>
+            </ion-col>
+            <ion-col class="center">
+                <ion-button (click)="changeDirection('right')">
+                    {{messages.RIGHT}}
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

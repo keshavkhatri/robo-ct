@@ -1,11 +1,11 @@
-ion-col.md.hydrated {
+.gameBox {
     padding: 1px;
     margin: 1px;
     min-height: 50px;
     border: 1px solid;
     text-align: center;
 }
-ion-grid {
+.game {
     transform: rotateX(150deg);
 }
 .north{
@@ -19,4 +19,7 @@ ion-grid {
 }
 .east{
     transform: rotate(90deg);
+}
+.center{
+    text-align: center;
 }
