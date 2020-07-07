@@ -24,10 +24,10 @@ REPORT will announce the X,Y and Direction of the robot.
 
 ### Installation
 
-> git clone https://github.com/keshavkhatri/robo-ct.git
-> cd robot-ct
-> npm i
-> ionic serve
+> git clone https://github.com/keshavkhatri/robo-ct.git <br />
+> cd robot-ct <br />
+> npm i <br />
+> ionic serve <br />
 
 ### Dependencies
 
