@@ -28,6 +28,12 @@ export class Tab1Page {
         private toastController: ToastController
     ) { }
 
+    /*
+        Function ngOnInit
+        Overwriting predefined function
+        Called when component initilaized
+        @param: void 
+    */
     ngOnInit() {
         for (let i = 0; i < LENGTH; i++) {
             this.xArr.push({});
@@ -64,26 +70,24 @@ export class Tab1Page {
 
     /*
         Function changeDirection
-        Used to change direction of the robo
+        Given current direction and new side
+        returns new direction
+        @param {curentDirection} curentDirection of robo
         @param {side} either left or right.
     */
-    changeDirection(side) {
+    changeDirection(curentDirection, side) {
         // Changing current direction according to input given 
-        switch (this.direction) {
+        switch (curentDirection) {
             case DIRECTIONS.EAST:
-                this.direction = side == SIDES.LEFT ? DIRECTIONS.NORTH : DIRECTIONS.SOUTH;
-                break;
+                return this.direction = side == SIDES.LEFT ? DIRECTIONS.NORTH : DIRECTIONS.SOUTH;
             case DIRECTIONS.WEST:
-                this.direction = side == SIDES.LEFT ? DIRECTIONS.SOUTH : DIRECTIONS.NORTH;
-                break;
+                return this.direction = side == SIDES.LEFT ? DIRECTIONS.SOUTH : DIRECTIONS.NORTH;
             case DIRECTIONS.NORTH:
-                this.direction = side == SIDES.LEFT ? DIRECTIONS.WEST : DIRECTIONS.EAST;
-                break;
+                return this.direction = side == SIDES.LEFT ? DIRECTIONS.WEST : DIRECTIONS.EAST;
             case DIRECTIONS.SOUTH:
-                this.direction = side == SIDES.LEFT ? DIRECTIONS.EAST : DIRECTIONS.WEST;
-                break;
+                return this.direction = side == SIDES.LEFT ? DIRECTIONS.EAST : DIRECTIONS.WEST;
             default:
-                break;
+                return false;
         }
     }
 
