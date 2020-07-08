@@ -29,6 +29,10 @@ REPORT will announce the X,Y and Direction of the robot.
 > npm i <br />
 > ionic serve <br />
 
+### Testing
+
+> npm test
+
 ### Dependencies
 
 - IONIC CLI
